@@ -138,37 +138,38 @@ module.exports = function (passport) {
      * [Facebook strategy]
      */
     passport.use(new FacebookStrategy({
-            clientID: configAuth.facebookAuth.clientID,
-            clientSecret: configAuth.facebookAuth.clientSecret,
-            callbackURL: configAuth.facebookAuth.callbackURL,
-            profileFields: ['id', 'displayName', 'photos', 'emails']
-        },
-        function(accessToken, refreshToken, profile, done) {
-            process.nextTick(function () {
-                User.findOne({'facebook.id' : profile.id}, function (err, user) {
-                    if (err) {
-                        return done(err);
-                    }
-                    if (user) {
-                        return done(null, user);
-                    } else { // no user matches, create a new user in DB
-                        var newUser = new User();
-                        newUser.facebook.id = profile.id;
-                        newUser.facebook.token = accessToken;
-                        newUser.facebook.name = profile.displayName;
-                        newUser.facebook.email = profile.emails[0].value;
-                        newUser.facebook.profilePhoto = profile.photos[0].value;
+          clientID: configAuth.facebookAuth.clientID,
+          clientSecret: configAuth.facebookAuth.clientSecret,
+          callbackURL: configAuth.facebookAuth.callbackURL,
+          profileFields: ['id', 'displayName', 'photos', 'emails']
+      },
+      function(accessToken, refreshToken, profile, done) {
+        process.nextTick(function () {
+          User.findOne({'facebook.id' : profile.id}, function (err, user) {
+            if (err) {
+                return done(err);
+            }
+            if (user) {
+                return done(null, user);
+            } else { // no user matches, create a new user in DB
+              console.log("in facebook strategy");
+              var newUser = new User();
+              newUser.facebook.id = profile.id;
+              newUser.facebook.token = accessToken;
+              newUser.facebook.name = profile.displayName;
+              newUser.facebook.email = profile.emails[0].value;
+              newUser.facebook.profilePhoto = profile.photos[0].value;
 
-                        newUser.save(function (err) {
-                            if (err) {
-                                return done(err);
-                            }
-                            return done(null, newUser);
-                        });
-                    }
-                });
-            });
-        }
+              newUser.save(function (err) {
+                  if (err) {
+                      return done(err);
+                  }
+                  return done(null, newUser);
+              });
+            }
+          });
+        });
+      }
     ));
 
     /**
