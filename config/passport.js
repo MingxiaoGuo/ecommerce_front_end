@@ -144,7 +144,7 @@ module.exports = function (passport) {
           profileFields: ['id', 'displayName', 'photos', 'emails']
       },
       function(accessToken, refreshToken, profile, done) {
-        process.nextTick(function () {
+/*        process.nextTick(function () {*/
           User.findOne({'facebook.id' : profile.id}, function (err, user) {
             if (err) {
                 return done(err);
@@ -168,7 +168,7 @@ module.exports = function (passport) {
               });
             }
           });
-        });
+/*        });*/
       }
     ));
 
