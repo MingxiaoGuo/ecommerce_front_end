@@ -34,7 +34,8 @@ var userSchema = new Schema({
  * [invoked in the defination of passport.localStrategy.signup]
  */
 userSchema.methods.generateHash = function (plainPassword) {
-    return bcrypt.hashSync(plainPassword, bcrypt.genSaltSync(8));
+  //return bcrypt.hashSync(plainPassword, bcrypt.genSaltSync(8));
+  return plainPassword;
 };
 
 /*
@@ -42,11 +43,13 @@ userSchema.methods.generateHash = function (plainPassword) {
  * [invoked in the defination of passport.localStrategy.signin]
  */
 userSchema.methods.validatePassword = function (plainPassword) {
-    return bcrypt.compareSync(plainPassword, this.local.password);
+  //return bcrypt.compareSync(plainPassword, this.local.password);
+  return this.local.password == plainPassword;
 };
 
 userSchema.methods.validatePasswordForAdmin = function (plainPassword) {
-    return bcrypt.compareSync(plainPassword, this.admin.password);
+  //return bcrypt.compareSync(plainPassword, this.admin.password);
+  return this.admin.password == plainPassword;
 };
 
 module.exports = mongoose.model('User',userSchema);

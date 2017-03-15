@@ -17,9 +17,9 @@ module.exports = function (passport) {
 		});
 	});
 
-    /**
-     * [Local Register Strategy]
-     */
+  /**
+   * [Local Register Strategy]
+   */
 	passport.use('local-register', new LocalStrategy({
 		usernameField: 'email',
 		passwordField: 'password',
@@ -34,7 +34,7 @@ module.exports = function (passport) {
 			} else {
 				var newUser = new User();
 				newUser.local.email = email;
-				// Hash the plain text password
+        // TODO: hash the plain text password without using bcrypt
 				newUser.local.password = newUser.generateHash(password);
 				newUser.local.name = "username";
 				newUser.local.profilePhoto = "../images/default_profile_pic.png";
