@@ -3,8 +3,8 @@
  */
 module.exports = {
     'facebookAuth' : {
-        'clientID': '231828317268443',
-        'clientSecret': 'e5bf96b111a70a4388060f606962c09b',
+        'clientID': '1481431478557686',
+        'clientSecret': '013997f066ce116fb43d49963c1045a2',
         'callbackURL': "../auth/facebook/callback"
     },
     'googleAuth' : {
