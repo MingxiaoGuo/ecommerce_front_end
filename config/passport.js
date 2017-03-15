@@ -154,6 +154,7 @@ module.exports = function (passport) {
             } else { // no user matches, create a new user in DB
               console.log("in facebook strategy");
               var newUser = new User();
+              console.log(profile);
               newUser.facebook.id = profile.id;
               newUser.facebook.token = accessToken;
               newUser.facebook.name = profile.displayName;
