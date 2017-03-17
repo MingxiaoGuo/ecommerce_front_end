@@ -18,7 +18,7 @@ body {
 }
 
 .userIconClass {
-  font-size:20px;
+  font-size:1em;
 }
 
 #indexJumbotron {
@@ -103,4 +103,9 @@ footer {
 
 .row {
   margin-top: auto;
+}
+
+.usernameLink {
+  margin-bottom: 1em;
+
 }

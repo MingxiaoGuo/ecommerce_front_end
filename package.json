@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start ./bin/www --watch"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "aws-sdk": "^2.27.0",
