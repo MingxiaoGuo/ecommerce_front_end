@@ -107,5 +107,49 @@ footer {
 
 .usernameLink {
   margin-bottom: 1em;
-
 }
+
+.personal-info div {
+  margin-bottom: 10px;
+}
+
+.personal-info div label {
+  text-align: right;
+}
+
+.personal-info btn {
+  margin: auto;
+}
+
+.personal-info .alert {
+  display: none;
+}
+
+#divConfirmPassword {
+  display: none;
+}
+
+#btnchangepassword {
+  color: #5cb85c;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+#btnDiscardChange {
+  display: none;
+  color: #d9534f;
+}
+
+.btnRowGroup {
+  margin-top: 10px;
+  text-align: center;
+}
+/* save changes button */
+.btnRowGroup button {
+  margin-right: 10px;
+}
+
+
+

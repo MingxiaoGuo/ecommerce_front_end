@@ -1,74 +1,141 @@
 <html>
-    <head>
-        <% include ../partial/head %>
-    </head>
+  <head>
+    <% include ../partial/head %>
+  </head>
     <body>
-        <% include ../partial/header %>
-        <div class="container col-md-6 col-md-offset-3" id="editProfileContainer">
-            <h1>Edit Profile</h1>
-            <hr>
-            <div class="row">
-                <!-- left column -->
-                <div class="col-md-3">
-                    <div class="text-center">
-                        <img src="<%= profileUser.profile.profilePhoto %>" class="profile-image img-circle" alt="avatar" style="width: 120px">
-                        <h6>Upload a different photo...</h6>
+      <% include ../partial/header %>
+      <div class="container col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3 "id="editProfileContainer">
+        <h2>Edit Profile</h2>
+        <hr> <!-- spliter line -->
+        <div class="row">
+          <!-- left column (picture) -->
+          <div class="col-md-3">
+            <div class="text-center">
+              <img src="<%= profileUser.profile.profilePhoto %>" class="profile-image img-circle" alt="avatar" style="width: 120px">
+              <h6>Upload a different photo...</h6>
 
-                        <input type="file" class="form-control">
-                    </div>
-                </div>
-
-                <!-- edit form column -->
-                <div class="col-md-9 personal-info">
-                    <div class="alert alert-info alert-dismissable">
-                        <a class="panel-close close" data-dismiss="alert">×</a>
-                        <i class="fa fa-coffee"></i>
-                        This is an <strong>.alert</strong>. Use this to show important messages to the user.
-                    </div>
-                    <h3>Personal info</h3>
-
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">Username:</label>
-                            <div class="col-lg-7">
-                                <input class="form-control" type="text" value="<%= profileUser.profile.name %>">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">Email:</label>
-                            <div class="col-lg-7">
-                                <input class="form-control" type="email" value="<%= profileUser.profile.email %>" disabled>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Password:</label>
-                            <div class="col-md-7">
-                                <input class="form-control" type="password" value="<%=profileUser.profile.password %>">
-                            </div>
-                        </div>
-                        <div>
-                          <button class="btn btn-default">change password</button>
-                        </div>
-                        <div class="form-group" hidden>
-                            <label class="col-md-3 control-label">Confirm password:</label>
-                            <div class="col-md-7">
-                                <input class="form-control" type="password" value="11111122333">
-                            </div>
-                        </div>
-                        <hr/>
-                        <div class="form-group">
-                          <input type="button" class="btn btn-primary" value="Save Changes">
-                        </div>
-                    </form>
-                  <a href="/profile" class="btn btn-default" value="Cancel">Cancel</a>
-                </div>
+              <input type="file" class="form-control">
             </div>
+          </div>
+
+          <!-- right column (information) -->
+          <div class="col-md-9 personal-info">
+            <div class="alert alert-danger alert-dismissable" id="alertMessageBlock">
+              <a class="panel-close close" data-dismiss="alert">×</a>
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <span id="messageBlock"></span>
+            </div>
+            <h3>Personal info</h3>
+            <!-- username -->
+            <div>
+              <label class="col-md-3 control-label">Username:</label>
+              <div class="col-lg-7">
+                <input class="form-control" type="text" id="name" value="<%= profileUser.profile.name %>">
+              </div>
+            </div>
+            <!-- email -->
+            <div>
+              <label class="col-md-3 control-label">Email:</label>
+              <div class="col-lg-7">
+                  <input class="form-control" type="email" id="email" value="<%= profileUser.profile.email %>" disabled>
+              </div>
+            </div>
+            <!-- show password if user type is local -->
+            <% if (profileUser.type == "local") { %>
+            <div>
+              <label class="col-md-3 control-label">Password:</label>
+              <div class="col-md-7">
+                <div class="input-group">
+                  <input class="form-control" type="password" id="password" tag="<%=profileUser.profile.password %>" value="<%=profileUser.profile.password %>">
+                  <!-- addon button for change password -->
+                  <span class="input-group-addon" id="basic-addon1">
+                    <button id="btnChangePassword" data-toggle="tooltip" data-placement="top" title="Change Password"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    <button id="btnDiscardChange"  data-toggle="tooltip" data-placement="top" title="Discard Change"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div id="divConfirmPassword">
+              <label class="col-md-3 control-label">Confirm password:</label>
+              <div class="col-md-7">
+                <input class="form-control" type="password" id="confirmpassword" value="<%= profileUser.profile.password %>">
+              </div>
+            </div>
+            <% } %>
+          </div>
+        </div> <!-- row end -->
+        <!-- button group -->
+        <div class="row btnRowGroup">
+          <button class="btn btn-primary" id="btnSaveChanges">Save Changes</button>
+          <a href="/profile" class="btn btn-default" value="Cancel">Cancel</a>
         </div>
+      </div> <!-- container end -->
     </body>
     <%include ../partial/footer.ejs%>
 </html>
 
 <script>
+  /**
+   * change visibility of confirm password block
+   */
+  function changeConfirmPassword (type) {
+    var div = document.getElementById("divConfirmPassword");
+    div.style.display = type;
+  }
+  /**
+   * check password matches to confirm password or not
+   * @returns {boolean}
+   */
+  function checkPassword() {
+    var newPassword = $("#password").val();
+    var confirmPassword = $("#confirmpassword").val();
+    if (newPassword != confirmPassword) {
+      return false;
+    }
+    return true;
+  }
+  
+  $( document ).ready(function() {
+    document.getElementById("btnChangePassword").onclick = function () {
+      //console.log("clicked");
+      changeConfirmPassword("block");
+      this.style.display = "none";
+      document.getElementById("btnDiscardChange").style.display = "block";
+    };
+    
+    document.getElementById("btnDiscardChange").onclick = function () {
+      changeConfirmPassword("none");
+      this.style.display = "none";
+      document.getElementById("btnChangePassword").style.display = "block";
+    };
+
+    document.getElementById("btnSaveChanges").onclick = function () {
+      document.getElementById("alertMessageBlock").style.display = "none"; // make alert disappear for better user experience
+      var password;
+      var name;
+      // check password is changed or not
+      if (document.getElementById("divConfirmPassword").style.display != "none") {
+        if (!checkPassword()) {
+          document.getElementById("alertMessageBlock").style.display = "block";
+          document.getElementById("messageBlock").innerHTML = "password doesn't match!!"; // TODO: find another way to alert
+        } else {
+          password = $("#password").val();
+        }
+      }
+      name = $("#name").val();
+      var changedInfo = {
+        name: name,
+        password: password
+      }
+
+      $.post("/profile/edit", changedInfo, function (result) {
+        
+      });
+    };
+
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+
 
 </script>
