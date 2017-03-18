@@ -110,7 +110,10 @@
     };
 
     document.getElementById("btnSaveChanges").onclick = function () {
-      document.getElementById("alertMessageBlock").style.display = "none"; // make alert disappear for better user experience
+      var alertBlock = document.getElementById("alertMessageBlock");
+      if (alertBlock.style.display != "none") {
+        alertBlock.style.display = "none";// make alert disappear for better user experience
+      }
       var password;
       var name;
       // check password is changed or not
@@ -129,7 +132,7 @@
       }
 
       $.post("/profile/edit", changedInfo, function (result) {
-        
+
       });
     };
 
