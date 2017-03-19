@@ -40,7 +40,7 @@ body {
   -moz-border-radius: 10px 10px 10px 10px;
   -webkit-border-radius: 10px 10px 10px 10px;
   border: 0px solid #000000;
-  padding: 30px;
+  padding: 20px 40px;
 }
 
 .panel {
@@ -154,6 +154,31 @@ footer {
 .btnRowGroup button {
   margin-right: 10px;
 }
+/* create product */
+#divProductCreate {
+  margin-top: 35px;
+  background-color: whitesmoke;
+  border-radius: 10px 10px 10px 10px;
+  -moz-border-radius: 10px 10px 10px 10px;
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border: 0px solid #000000;
+  padding: 20px 40px;
+}
 
+#createProductSpan {
+  margin-top: 20px;
+  font-size: 2em;
+}
 
+#divProductCreate label {
+  text-align: right;
+}
+
+textarea {
+  overflow: scroll;
+}
+
+#buttonGroupInCreateProduct {
+  margin: auto;
+}
 

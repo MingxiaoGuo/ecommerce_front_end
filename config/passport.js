@@ -15,6 +15,7 @@ module.exports = function (passport) {
 		User.findById(id, function(err, user) {
       var newUser = {};
       newUser._id = user._id;
+      newUser.shippingInfo = user.shippingInfo;
       if (user.local.email != undefined) {
         newUser.type = "local";
         newUser.profilePhoto = user.local.profilePhoto;
@@ -40,7 +41,7 @@ module.exports = function (passport) {
         newUser.type = "admin";
         newUser.password = user.admin.password;
       }
-      // console.log("in passport", newUser);
+      console.log("in passport", newUser);
 			done(err, newUser);
 		});
 	});

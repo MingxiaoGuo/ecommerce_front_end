@@ -3,17 +3,19 @@ var router = express.Router();
 
 module.exports = function (passport) {
     router.get('/', function(req, res) {
-        if (typeof req.user === 'undefined') {
-            res.render('pages/adminLogin', {message: req.flash('signinMessage')});
-        } else {
-            res.render('pages/admin', { user : req.user });
-        }
+      console.log("in admin: ", req.user);
+      if (req.user != undefined && req.user.type == "admin") {
+        req.session.user = req.user;
+        res.render('pages/admin', { user : req.session.user });
+      } else {
+        res.render('pages/adminLogin', {message: req.flash('signinMessage')});
+      }
     });
 
     /* [GET] admin login */
     router.get('/login', function (req, res) {
         if (passport.isAuthenticated) {
-            console.log(req.user);
+            // console.log(req.user);
             res.render('pages/admin', {message: req.flash('signinMessage'), user : req.user });
         } else {
             res.render('pages/adminLogin', {message: req.flash('signinMessage')});

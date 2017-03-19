@@ -144,6 +144,7 @@
 
       $.post("/profile/edit", changedInfo, function (result) {
         console.log(result);
+        // TODO: add process bar
         setTimeout(finishUpdate(), 2000);
       });
     });
