@@ -4,28 +4,35 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
     admin: {
-        email: String,
-        password: String
+      email: String,
+      password: String
     },
     local: {
-        email: String,
-        name: String,
-        password: String,
-        profilePhoto: String
+      email: String,
+      name: String,
+      password: String,
+      profilePhoto: String
     },
     facebook: {
-        id: String,
-        token: String,
-        email: String,
-        name: String,
-        profilePhoto: String
+      id: String,
+      token: String,
+      email: String,
+      name: String,
+      profilePhoto: String
     },
     google: {
-        id: String,
-        token: String,
-        email: String,
-        name: String,
-        profilePhoto: String
+      id: String,
+      token: String,
+      email: String,
+      name: String,
+      profilePhoto: String
+    },
+    shippingInfo : {
+      street_address: String,
+      city: String,
+      state: String,
+      zip: String,
+      phone_number: String
     }
 });
 

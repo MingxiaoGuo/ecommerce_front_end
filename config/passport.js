@@ -66,7 +66,13 @@ module.exports = function (passport) {
 				newUser.local.password = newUser.generateHash(password);
 				newUser.local.name = "username";
 				newUser.local.profilePhoto = "../images/default_profile_pic.png";
-                console.log("user get info!")
+        newUser.shippingInfo = {
+          street_address: "",
+          city: "",
+          state: "",
+          zip: "",
+          phone_number: ""
+        };
 				newUser.save(function (err) {
                     if (err) {
                         console.log("cannot register![in passport]");
@@ -172,7 +178,7 @@ module.exports = function (passport) {
           profileFields: ['id', 'displayName', 'photos', 'emails']
       },
       function(accessToken, refreshToken, profile, done) {
-/*        process.nextTick(function () {*/
+        process.nextTick(function () {
           User.findOne({'facebook.id' : profile.id}, function (err, user) {
             if (err) {
                 return done(err);
@@ -186,6 +192,13 @@ module.exports = function (passport) {
               newUser.facebook.id = profile.id;
               newUser.facebook.token = accessToken;
               newUser.facebook.name = profile.displayName;
+              newUser.shippingInfo = {
+                street_address: "",
+                city: "",
+                state: "",
+                zip: "",
+                phone_number: ""
+              };
               if (profile.emails == undefined) {
                 newUser.facebook.email = "youremail@sample.com";
               } else {
@@ -202,7 +215,7 @@ module.exports = function (passport) {
               });
             }
           });
-/*        });*/
+        });
       }
     ));
 
@@ -210,36 +223,42 @@ module.exports = function (passport) {
      * [Google Strategy]
      */
     passport.use(new GoogleStrategy({
-        clientID: configAuth.googleAuth.clientID,
-        clientSecret: configAuth.googleAuth.clientSecret,
-        callbackURL: configAuth.googleAuth.callbackURL,
-        profileFields: ['id', 'displayName', 'photos', 'emails']
+      clientID: configAuth.googleAuth.clientID,
+      clientSecret: configAuth.googleAuth.clientSecret,
+      callbackURL: configAuth.googleAuth.callbackURL,
+      profileFields: ['id', 'displayName', 'photos', 'emails']
     }, function (accessToken, refreshToken, profile, done) {
-        process.nextTick(function () {
-           User.findOne({ 'google.id' : profile.id }, function (err, user) {
-               if (err) {
-                   return done(err);
-               }
-               if (user) {
-                   //console.log("==================================", profile);
-                   return done(null, user);
-               } else { // Create new record in DB
-                   var newUser = new User();
-                   newUser.google.id = profile.id;
-                   newUser.google.token = profile.token;
-                   newUser.google.email = profile.emails[0].value;
-                   newUser.google.name = profile.displayName;
-                   newUser.google.profilePhoto = profile.photos[0].value;
-
-                   newUser.save(function (err) {
-                       if (err) {
-                           return done(err);
-                       }
-                       return done(null, newUser);
-                   });
-               }
-           });
-        });
+      process.nextTick(function () {
+       User.findOne({ 'google.id' : profile.id }, function (err, user) {
+         if (err) {
+           return done(err);
+         }
+         if (user) {
+           //console.log("==================================", profile);
+           return done(null, user);
+         } else { // Create new record in DB
+           var newUser = new User();
+           newUser.google.id = profile.id;
+           newUser.google.token = profile.token;
+           newUser.google.email = profile.emails[0].value;
+           newUser.google.name = profile.displayName;
+           newUser.google.profilePhoto = profile.photos[0].value;
+           newUser.shippingInfo = {
+             street_address: "",
+             city: "",
+             state: "",
+             zip: "",
+             phone_number: ""
+           };
+             newUser.save(function (err) {
+                 if (err) {
+                     return done(err);
+                 }
+                 return done(null, newUser);
+             });
+         }
+       });
+      });
     }));
 
 }
