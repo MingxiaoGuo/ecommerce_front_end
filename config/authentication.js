@@ -3,13 +3,13 @@
  */
 module.exports = {
   'facebookAuth' : {
-    'clientID': '1481431478557686',
-    'clientSecret': 'XXXXXXXXXXXXXXXXXXXXX',
+    'clientID': 'X',
+    'clientSecret': 'X',
     'callbackURL': "../auth/facebook/callback"
   },
   'googleAuth' : {
-    'clientID': "960864811575-cln6a5h75lvoa1hcihbsck2ru7b2ijr1.apps.googleusercontent.com",
-    'clientSecret': "XXXXXXXXXXXXXXXXXXXXXXXX",
+    'clientID': "X",
+    'clientSecret': "X",
     'callbackURL': "../auth/google/callback"
   }
 }

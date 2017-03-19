@@ -17,6 +17,10 @@ body {
   padding-bottom: 0px;
 }
 
+.navbarUserProfilePic {
+  height:60px;
+}
+
 .userIconClass {
   font-size:1em;
 }

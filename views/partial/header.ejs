@@ -45,13 +45,7 @@
             &nbsp;
             <!--change input attribute according to profile type -->
             <span class="userIconClass">
-              <% if (typeof user.facebook.id !== 'undefined') { %>
-              <%= user.facebook.name %>
-              <% } else if (typeof user.google.id !== 'undefined') { %>
-              <%= user.google.name %>
-              <% } else { %>
-              <%= user.local.name %>
-              <% } %>
+              <%= user.name %>
             </span>
 
             <b class="caret"></b>
@@ -62,28 +56,15 @@
                     <!--profile picture-->
                     <div class="col-lg-4">
                       <p class="text-center">
-                        <!--change image link according to profile type -->
-                        <% if (typeof user.facebook.id !== 'undefined') { %>
-                          <img class="profile-image img-circle" src="<%= user.facebook.profilePhoto %>" >
-                        <% } else if (typeof user.google.id !== 'undefined') { %>
-                          <img class="profile-image img-circle" src="<%= user.google.profilePhoto %>" >
-                        <% } else { %>
-                          <img class="profile-image img-circle" src="<%= user.local.profilePhoto %>" height="45px">
-                        <% } %>
+                        <img class="profile-image img-circle navbarUserProfilePic" src="<%= user.profilePhoto %>" >
                       </p>
                     </div>
                     <!--profile summary-->
-                    <%if (typeof user.admin.email === 'undefined') {%>
+                    <%if (user.type != "admin") {%>
                       <div class="col-lg-8">
                         <div class="usernameLink">
                           <a  href="/profile">
-                            <% if (typeof user.facebook.id !== 'undefined') { %>
-                            <%= user.facebook.name %>
-                            <% } else if (typeof user.google.id !== 'undefined') { %>
-                            <%= user.google.name %>
-                            <% } else { %>
-                            <%= user.local.name %>
-                            <% } %>
+                            <%= user.name %>
                           </a>
                         </div>
 

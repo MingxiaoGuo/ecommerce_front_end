@@ -11,7 +11,7 @@
           <!-- left column (picture) -->
           <div class="col-md-3">
             <div class="text-center">
-              <img src="<%= profileUser.profile.profilePhoto %>" class="profile-image img-circle" alt="avatar" style="width: 120px">
+              <img src="<%= user.profilePhoto %>" class="profile-image img-circle" alt="avatar" style="width: 120px">
               <h6>Upload a different photo...</h6>
 
               <input type="file" class="form-control">
@@ -30,23 +30,23 @@
             <div>
               <label class="col-md-3 control-label">Username:</label>
               <div class="col-lg-7">
-                <input class="form-control" type="text" id="name" value="<%= profileUser.profile.name %>">
+                <input class="form-control" type="text" id="name" tag="<%= user.type%>" value="<%= user.name %>">
               </div>
             </div>
             <!-- email -->
             <div>
               <label class="col-md-3 control-label">Email:</label>
               <div class="col-lg-7">
-                  <input class="form-control" type="email" id="email" value="<%= profileUser.profile.email %>" disabled>
+                  <input class="form-control" type="email" id="email" value="<%= user.email %>" disabled>
               </div>
             </div>
             <!-- show password if user type is local -->
-            <% if (profileUser.type == "local") { %>
+            <% if (user.type == "local") { %>
             <div>
               <label class="col-md-3 control-label">Password:</label>
               <div class="col-md-7">
                 <div class="input-group">
-                  <input class="form-control" type="password" id="password" tag="<%=profileUser.profile.password %>" value="<%=profileUser.profile.password %>">
+                  <input class="form-control" type="password" id="password" tag="<%=user.password %>" value="<%=user.password %>">
                   <!-- addon button for change password -->
                   <span class="input-group-addon" id="basic-addon1">
                     <button id="btnChangePassword" data-toggle="tooltip" data-placement="top" title="Change Password"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
@@ -58,7 +58,7 @@
             <div id="divConfirmPassword">
               <label class="col-md-3 control-label">Confirm password:</label>
               <div class="col-md-7">
-                <input class="form-control" type="password" id="confirmpassword" value="<%= profileUser.profile.password %>">
+                <input class="form-control" type="password" id="confirmpassword" value="<%= user.password %>">
               </div>
             </div>
             <% } %>
@@ -74,42 +74,51 @@
     <%include ../partial/footer.ejs%>
 </html>
 
-<script>
-  /**
-   * change visibility of confirm password block
-   */
-  function changeConfirmPassword (type) {
-    var div = document.getElementById("divConfirmPassword");
-    div.style.display = type;
-  }
-  /**
-   * check password matches to confirm password or not
-   * @returns {boolean}
-   */
-  function checkPassword() {
-    var newPassword = $("#password").val();
-    var confirmPassword = $("#confirmpassword").val();
-    if (newPassword != confirmPassword) {
-      return false;
-    }
-    return true;
-  }
+<script type="text/javascript">
   
-  $( document ).ready(function() {
-    document.getElementById("btnChangePassword").onclick = function () {
+  function finishUpdate() {
+    window.location.replace("/profile");
+  }
+
+  $(document).ready(function(){
+    <% if (user.type == "local") { %>
+    /**
+     * change visibility of confirm password block
+     */
+    function changeConfirmPassword (type) {
+      var div = document.getElementById("divConfirmPassword");
+      div.style.display = type;
+    }
+    /**
+     * check password matches to confirm password or not
+     * @returns {boolean}
+     */
+    function checkPassword() {
+      var newPassword = $("#password").val();
+      var confirmPassword = $("#confirmpassword").val();
+      if (newPassword != confirmPassword) {
+        return false;
+      }
+      return true;
+    }
+
+    /**
+     * click event listener on change password
+     */
+    $("#btnChangePassword").on("click", function () {
       //console.log("clicked");
       changeConfirmPassword("block");
       this.style.display = "none";
       document.getElementById("btnDiscardChange").style.display = "block";
-    };
+    });
     
     document.getElementById("btnDiscardChange").onclick = function () {
       changeConfirmPassword("none");
       this.style.display = "none";
       document.getElementById("btnChangePassword").style.display = "block";
     };
-
-    document.getElementById("btnSaveChanges").onclick = function () {
+    <% } %>
+    $('#btnSaveChanges').on('click', function () {
       var alertBlock = document.getElementById("alertMessageBlock");
       if (alertBlock.style.display != "none") {
         alertBlock.style.display = "none";// make alert disappear for better user experience
@@ -117,7 +126,8 @@
       var password;
       var name;
       // check password is changed or not
-      if (document.getElementById("divConfirmPassword").style.display != "none") {
+      var type = $("#name").attr("tag");
+      if (type == "local") {
         if (!checkPassword()) {
           document.getElementById("alertMessageBlock").style.display = "block";
           document.getElementById("messageBlock").innerHTML = "password doesn't match!!"; // TODO: find another way to alert
@@ -129,16 +139,19 @@
       var changedInfo = {
         name: name,
         password: password
-      }
+      };
+      console.log(changedInfo);
 
       $.post("/profile/edit", changedInfo, function (result) {
-
+        console.log(result);
+        setTimeout(finishUpdate(), 2000);
       });
-    };
+    });
 
-    $('[data-toggle="tooltip"]').tooltip();
+
   });
 
+  $('[data-toggle="tooltip"]').tooltip();
 
 
 </script>

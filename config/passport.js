@@ -13,7 +13,35 @@ module.exports = function (passport) {
 
 	passport.deserializeUser(function(id, done) {
 		User.findById(id, function(err, user) {
-			done(err, user);
+      var newUser = {};
+      newUser._id = user._id;
+      if (user.local.email != undefined) {
+        newUser.type = "local";
+        newUser.profilePhoto = user.local.profilePhoto;
+        newUser.name = user.local.name;
+        newUser.password = user.local.password;
+        newUser.subId = user._id;
+        newUser.email = user.local.email;
+      } else if (user.facebook.id != undefined) {
+        newUser.type = "facebook";
+        newUser.profilePhoto = user.facebook.profilePhoto;
+        newUser.name = user.facebook.name;
+        newUser.password = user.facebook.password;
+        newUser.subId = user.facebook.id;
+        newUser.email = user.facebook.email;
+      } else if (user.google.id != undefined){
+        newUser.type = "google";
+        newUser.profilePhoto = user.google.profilePhoto;
+        newUser.name = user.google.name;
+        newUser.password = user.google.password;
+        newUser.subId = user.google.id;
+        newUser.email = user.google.email;
+      } else {
+        newUser.type = "admin";
+        newUser.password = user.admin.password;
+      }
+      // console.log("in passport", newUser);
+			done(err, newUser);
 		});
 	});
 
