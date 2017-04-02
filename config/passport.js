@@ -41,7 +41,7 @@ module.exports = function (passport) {
         newUser.type = "admin";
         newUser.password = user.admin.password;
       }
-      console.log("in passport", newUser);
+      //console.log("in passport", newUser);
 			done(err, newUser);
 		});
 	});

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <% include ../partial/head %>
+ <% include ../partial/head %>
 </head>
 <body>
 <% include ../partial/header %>
@@ -17,26 +17,26 @@
         <div class="col-sm-6 col-md-4">
           <div class="thumbnail myProductOverviewItem">
             <!-- product picture -->
-            <div>
-              <img src=<%= productList[i].productPics[0] %> alt=<%= productList[i].productName %> >
+            <div style="height: 260px;">
+              <img src=<%= productList[i].product.productPhotos[0] %> alt=<%= productList[i].product.name %> >
             </div>
             <div class="caption">
               <table class="table table-hover">
                 <tr>
                   <td>Name: </td>
-                  <td><%= productList[i].name %></td>
+                  <td><%= productList[i].product.name %></td>
                 </tr>
                 <tr>
                   <td>Price: </td>
-                  <td><i class="fa fa-usd" aria-hidden="true"></i><%= productList[i].price %></td>
+                  <td><i class="fa fa-usd" aria-hidden="true"></i><%= productList[i].product.price %></td>
                 </tr>
                 <tr>
                   <td>Inventory: </td>
-                  <td><%= productList[i].inventory %></td>
+                  <td><%= productList[i].product.inventory %></td>
                 </tr>
               </table>
               <p>
-                <a href="#" class="btn btn-primary btn-block" role="button">Detail</a>
+                <button class="btn btn-primary btn-block btnProductDetail" value="<%= productList[i]._id%>">Detail</button>
                 <a href="#" class="btn btn-danger btn-block" role="button">Delete</a>
               </p>
             </div>
@@ -52,7 +52,17 @@
   $(document).ready(function () {
     $("#btnCreateNewProduct").on("click", function () {
       window.location.replace("/productManagement/createProduct");
+    });
+    
+    $(".btnProductDetail").on("click", function () {
+
+      var id = $(this).val();
+      alert("clicked" + id);
+      //console.log(id);
+      var url = "/productManagement/productDetail/" + id;
+      window.location.href = url;
     })
+    
   });
 </script>
 </html>

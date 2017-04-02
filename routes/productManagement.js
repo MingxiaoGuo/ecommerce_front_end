@@ -5,16 +5,28 @@ var Product = require("../modules/product");
 module.exports = function () {
   router.get('/', function (req, res) {
     if (req.session.user != undefined && req.session.user.type == "admin") {
-      var productList = [
-        //TODO: load product list from database
-      ];
-      res.render('pages/productManagement', {user: req.session.user, productList : productList} );
+      Product.find({}, function (err, users) {
+        var productList = [];
+        if (err) {
+          console.log(err);
+          throw(err);
+        } else {
+          //console.log(users);
+          for (var i = 0; i < users.length; i++) {
+            productList[i] = users[i];
+          }
+          //console.log(productList);
+          res.render('pages/productManagement', {user: req.session.user, productList : productList} );
+        }
+      });
+
     } else {
       res.redirect('/login');
     }
   });
 
   router.get("/createProduct", function (req, res) {
+    console.log("create");
     if (req.session.user != undefined && req.session.user.type == "admin") {
       res.render('pages/productCreate', {user: req.session.user} );
     } else {
@@ -50,6 +62,21 @@ module.exports = function () {
     });
   });
 
+  /**
+   * Render product detail page according to specific product id
+   */
+  router.get("/productDetail/:productId", function (req, res) {
+    console.log(req.params);
+    if (req.session.user != undefined && req.session.user.type == "admin") {
+      res.render("pages/productDetail", {user: req.session.user, productId: req.params.productId});
+    } else {
+      res.redirect("/login");
+    }
+  });
+
+
+
+
 
   return router;
-}
+};
