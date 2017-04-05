@@ -65,16 +65,90 @@ module.exports = function () {
   /**
    * Render product detail page according to specific product id
    */
-  router.get("/productDetail/:productId", function (req, res) {
+  router.get("/productModify/:productId", function (req, res) {
     console.log(req.params);
-    if (req.session.user != undefined && req.session.user.type == "admin") {
-      res.render("pages/productDetail", {user: req.session.user, productId: req.params.productId});
-    } else {
-      res.redirect("/login");
-    }
+    // get product from database
+    var product = {
+      _id : String,
+      name : String,
+      category : String,
+      price : String,
+      inventory : String,
+      photos : String,
+      description : String
+    };
+    Product.findOne({_id: req.params.productId}, "_id category product", function (error, prod) {
+      if (error) {
+        console.log(error);
+        throw(error);
+      } else {
+        console.log(prod);
+        product._id = prod._id + "";
+        product.name = prod.product.name;
+        product.category = prod.category;
+        product.price = prod.product.price;
+        product.inventory = prod.product.inventory;
+        product.photos = prod.product.productPhotos;
+        product.description = prod.product.description/*.split("\n")*/;
+        // console.log(product);
+        // var descriptionList = product.product.description.split("\n");
+        // console.log(descriptionList);
+        // product.product.description = [];
+        // product.product.description = descriptionList;
+        console.log(product);
+        if (req.session.user != undefined && req.session.user.type == "admin") {
+          res.render("pages/productModify", {user: req.session.user, product: product});
+        } else {
+          res.redirect("/login");
+        }
+      }
+    });
+
   });
 
-
+  router.post("/productModify", function (req, res) {
+    console.log(req.body.category);
+    // update data in database
+    var updatedData = req.body;
+    Product.findOne({_id: updatedData._id}, "_id category product", function (err, bike) {
+      console.log(bike);
+      if (err) {
+        console.log(err);
+        // return json with fail message
+        return res.json({
+          type: false,
+          message: "Cannot update product with id = " + updatedData._id
+        });
+      }
+      if (bike == null) {
+        console.log(err);
+        // return json with fail message
+        return res.json({
+          type: false,
+          message: "Cannot update product with id = " + updatedData._id
+        });
+      }
+      bike.category = updatedData.category;
+      bike.product.description = updatedData.description;
+      bike.product.name = updatedData.name;
+      bike.product.price = updatedData.price;
+      bike.product.inventory = updatedData.inventory;
+      bike.save(function (err, updatedBike) {
+        if (err) {
+          console.log(err);
+          // return json with fail message
+          return res.json({
+            type: false,
+            message: "Cannot update product with id = " + updatedData._id
+          });
+        }
+        return res.json({
+          type: true,
+          message: "Updated!"
+        });
+      });
+    });
+  });
 
 
 

@@ -182,8 +182,7 @@ textarea {
   margin: auto;
 }
 
-/* product detail CSS */
-
+/* product detail CSS (comes from internet) */
 .preview {
   display: -webkit-box;
   display: -webkit-flex;
@@ -339,4 +338,8 @@ textarea {
     -webkit-transform: scale(1);
     transform: scale(1); }
 }
+/* [END] product detail CSS */
 
+#btnCreateNewProduct {
+  margin-top: 20px;
+}
