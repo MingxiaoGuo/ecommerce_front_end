@@ -38,14 +38,14 @@
               <span class="review-no">41 reviews</span>
             </div>
             <!-- description panel -->
-            <h5 class="product-description">
-              Spec:
+            <div class="product-description">
+              <h4>Spec:</h4>
               <ul class="list-group">
                 <% for (var i = 0; i < product.description.length; i++) { %>
                 <li class="list-group-item"><%= product.description[i] %></li>
                 <% } %>
               </ul>
-            </h5>
+            </div>
 
             <h4 class="price">current price: <span>$<%= product.price %></span></h4>
             <!-- size options -->

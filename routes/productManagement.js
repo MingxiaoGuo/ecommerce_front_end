@@ -5,15 +5,15 @@ var Product = require("../modules/product");
 module.exports = function () {
   router.get('/', function (req, res) {
     if (req.session.user != undefined && req.session.user.type == "admin") {
-      Product.find({}, function (err, users) {
+      Product.find({}, function (err, prod) {
         var productList = [];
         if (err) {
           console.log(err);
           throw(err);
         } else {
           //console.log(users);
-          for (var i = 0; i < users.length; i++) {
-            productList[i] = users[i];
+          for (var i = 0; i < prod.length; i++) {
+            productList[i] = prod[i];
           }
           //console.log(productList);
           res.render('pages/productManagement', {user: req.session.user, productList : productList} );

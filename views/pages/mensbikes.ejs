@@ -6,19 +6,50 @@
   <body>
     <% include ../partial/header %>
     <div class="container">
-    	<div class="row">
-    		<!-- Men -->
-    		<div class="col-xs-10 col-xs-offset-1 col-md-4">
-          <div class="thumbnail">
-            <a href="#"><img src="..." alt="..."></a>
+      <div class="row">
+        <!-- [START] product list -->
+        <% for (var i = 0; i < productList.length; i++) { %>
+        <div class="col-sm-6 col-md-4">
+          <div class="thumbnail myProductOverviewItem">
+            <!-- product picture -->
+            <div style="height: 260px;">
+              <img src=<%= productList[i].product.productPhotos[0] %> alt=<%= productList[i].product.name %> >
+            </div>
             <div class="caption">
-              <h3>Thumbnail label</h3>
-              <p>...</p>
+              <table class="table table-hover">
+                <tr>
+                  <td>Name: </td>
+                  <td><%= productList[i].product.name %></td>
+                </tr>
+                <tr>
+                  <td>Price: </td>
+                  <td><i class="fa fa-usd" aria-hidden="true"></i><%= productList[i].product.price %></td>
+                </tr>
+                <tr>
+                  <td>Inventory: </td>
+                  <td><%= productList[i].product.inventory %></td>
+                </tr>
+              </table>
+              <p>
+                <button class="btn btn-primary btn-block btnProductDetail" value="<%= productList[i]._id%>">Detail</button>
+                <button class="btn btn-warning btn-block">Add to cart</button>
+              </p>
             </div>
           </div>
-    		</div>
-    	</div>
+        </div>
+        <% } %>
+        <!-- [END] product list -->
+      </div>
     </div>
     <% include ../partial/footer %>
   </body>
+<script>
+  $(".btnProductDetail").on("click", function () {
+    var id = $(this).val();
+    alert("clicked" + id);
+    //console.log(id);
+    var url = "/bikes/productDetail/" + id;
+    window.location.href = url;
+  })
+</script>
 </html>
