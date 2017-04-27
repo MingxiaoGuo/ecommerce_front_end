@@ -15,7 +15,7 @@ module.exports = function (passport) {
     });
 
     router.post('/', passport.authenticate('local-signin', {
-        successRedirect: '/profile',
+        successRedirect: '/',
         failureRedirect: '/login',
         failureFlash: true
     }));

@@ -39,6 +39,7 @@ module.exports = function (passport) {
         newUser.email = user.google.email;
       } else {
         newUser.type = "admin";
+        newUser.name = user.admin.name;
         newUser.password = user.admin.password;
       }
       //console.log("in passport", newUser);
@@ -46,147 +47,149 @@ module.exports = function (passport) {
 		});
 	});
 
-  /**
-   * [Local Register Strategy]
-   */
+    /**
+     * [Local Register Strategy]
+     */
 	passport.use('local-register', new LocalStrategy({
-		usernameField: 'email',
-		passwordField: 'password',
-		passReqToCallback: true
+      usernameField: 'email',
+      passwordField: 'password',
+      passReqToCallback: true
 	}, function (req, email, password, done) {
-		User.findOne({'local.email': email}, function (err, user) {
-			if (err) {
-				return done(err)
-			}
-			if (user) {
-				return done(null, false, req.flash('signupMessage', 'Email already taken'));
-			} else {
-				var newUser = new User();
-				newUser.local.email = email;
-        // TODO: hash the plain text password without using bcrypt
-				newUser.local.password = newUser.generateHash(password);
-				newUser.local.name = "username";
-				newUser.local.profilePhoto = "../images/default_profile_pic.png";
-        newUser.shippingInfo = {
-          street_address: "",
-          city: "",
-          state: "",
-          zip: "",
-          phone_number: ""
-        };
-				newUser.save(function (err) {
-                    if (err) {
-                        console.log("cannot register![in passport]");
-                        throw err;
-                    }
-                    console.log("registered!")
-                    return done(null, newUser);
-                });
-			}
-		});
+      User.findOne({'local.email': email}, function (err, user) {
+        if (err) {
+          return done(err)
+        }
+        if (user) {
+          return done(null, false, req.flash('signupMessage', 'Email already taken'));
+        } else {
+          var newUser = new User();
+          newUser.local.email = email;
+          // TODO: hash the plain text password without using bcrypt
+          newUser.local.password = newUser.generateHash(password);
+          newUser.local.name = "username";
+          newUser.local.profilePhoto = "../images/default_profile_pic.png";
+          newUser.shippingInfo = {
+            firstName: "",
+            lastName: "",
+            streetAddress: "",
+            city: "",
+            state: "",
+            zip: "",
+            phoneNumber: ""
+          };
+          newUser.save(function (err) {
+            if (err) {
+              console.log("cannot register![in passport]");
+              throw err;
+            }
+            console.log("registered!")
+            return done(null, newUser);
+          });
+        }
+      });
 	}));
 
     /**
      * [Local Login Strategy]
      */
 	passport.use('local-signin', new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback: true
+      usernameField: 'email',
+      passwordField: 'password',
+      passReqToCallback: true
     }, function (req, email, password, done) {
-        User.findOne({'local.email': email}, function (err, user) {
-            if (err) {
-                return done(err);
-            }
-            if (!user) {
-                return done(null, false, req.flash('signinMessage', 'No user found'));
-            }
-            if (!user.validatePassword(password)) {
-                return done(null, false, req.flash('signinMessage', 'Wrong password'));
-            }
-            console.log("here we are in local strategy");
-            return done(null, user);
-        });
+      User.findOne({'local.email': email}, function (err, user) {
+        if (err) {
+          return done(err);
+        }
+        if (!user) {
+          return done(null, false, req.flash('signinMessage', 'No user found'));
+        }
+        if (!user.validatePassword(password)) {
+          return done(null, false, req.flash('signinMessage', 'Wrong password'));
+        }
+        console.log("here we are in local strategy");
+        return done(null, user);
+      });
     }));
 
     /**
      * [Admin Register strategy]
      */
     passport.use('admin-register', new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback: true
+      usernameField: 'email',
+      passwordField: 'password',
+      passReqToCallback: true
     }, function (req, email, password, done) {
-        User.findOne({'admin.email': email}, function (err, user) {
+      User.findOne({'admin.email': email}, function (err, user) {
+        if (err) {
+          return done(err)
+        }
+        if (user) {
+          return done(null, false, req.flash('signupMessage', 'Email already taken'));
+        } else {
+          var newUser = new User();
+          newUser.admin.email = email;
+          // Hash the plain text password
+          newUser.admin.password = newUser.generateHash(password);
+          newUser.admin.name = "admin";
+          console.log("admin user get info!")
+          newUser.save(function (err) {
             if (err) {
-                return done(err)
+              console.log("cannot register![in passport]");
+              throw err;
             }
-            if (user) {
-                return done(null, false, req.flash('signupMessage', 'Email already taken'));
-            } else {
-                var newUser = new User();
-                newUser.admin.email = email;
-                // Hash the plain text password
-                newUser.admin.password = newUser.generateHash(password);
-                newUser.admin.name = "admin";
-                console.log("admin user get info!")
-                newUser.save(function (err) {
-                    if (err) {
-                        console.log("cannot register![in passport]");
-                        throw err;
-                    }
-                    console.log("registered!")
-                    return done(null, newUser);
-                });
-            }
-        });
+            console.log("registered!")
+            return done(null, newUser);
+          });
+        }
+      });
     }));
 
     /**
      * [Admin log-in strategy]
      */
     passport.use('admin-signin', new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback: true
+      usernameField: 'email',
+      passwordField: 'password',
+      passReqToCallback: true
     }, function (req, email, password, done) {
-        User.findOne({'admin.email': email}, function (err, user) {
-            console.log("in admin login", email);
-            console.log("in admin login", password);
-            console.log(user);
-            if (err) {
-                console.log('in admin login error', err);
-                return done(err);
-            }
-            if (!user) {
-                return done(null, false, req.flash('signinMessage', 'No user found'));
-            }
-            if (!user.validatePasswordForAdmin(password)) {
-                return done(null, false, req.flash('signinMessage', 'Wrong password'));
-            }
-            console.log("$$$$$$$$$$$$$$$$$ here we are in admin strategy");
-            return done(null, user);
-        });
+      User.findOne({'admin.email': email}, function (err, user) {
+        console.log("in admin login", email);
+        console.log("in admin login", password);
+        console.log(user);
+        if (err) {
+          console.log('in admin login error', err);
+          return done(err);
+        }
+        if (!user) {
+          return done(null, false, req.flash('signinMessage', 'No user found'));
+        }
+        if (!user.validatePasswordForAdmin(password)) {
+          return done(null, false, req.flash('signinMessage', 'Wrong password'));
+        }
+        console.log("$$$$$$$$$$$$$$$$$ here we are in admin strategy");
+        return done(null, user);
+      });
     }));
 
     /**
      * [Facebook strategy]
      */
     passport.use(new FacebookStrategy({
-          clientID: configAuth.facebookAuth.clientID,
-          clientSecret: configAuth.facebookAuth.clientSecret,
-          callbackURL: configAuth.facebookAuth.callbackURL,
-          profileFields: ['id', 'displayName', 'photos', 'emails']
+        clientID: configAuth.facebookAuth.clientID,
+        clientSecret: configAuth.facebookAuth.clientSecret,
+        callbackURL: configAuth.facebookAuth.callbackURL,
+        profileFields: ['id', 'displayName', 'photos', 'emails']
       },
       function(accessToken, refreshToken, profile, done) {
         process.nextTick(function () {
           User.findOne({'facebook.id' : profile.id}, function (err, user) {
             if (err) {
-                return done(err);
+              return done(err);
             }
             if (user) {
-                return done(null, user);
-            } else { // no user matches, create a new user in DB
+              return done(null, user);
+            } else { // no user matches, create a new user file in DB
               console.log("in facebook strategy");
               var newUser = new User();
               console.log(profile);
@@ -194,11 +197,13 @@ module.exports = function (passport) {
               newUser.facebook.token = accessToken;
               newUser.facebook.name = profile.displayName;
               newUser.shippingInfo = {
-                street_address: "",
+                firstName: "",
+                lastName: "",
+                streetAddress: "",
                 city: "",
                 state: "",
                 zip: "",
-                phone_number: ""
+                phoneNumber: ""
               };
               if (profile.emails == undefined) {
                 newUser.facebook.email = "youremail@sample.com";
@@ -209,10 +214,10 @@ module.exports = function (passport) {
               newUser.facebook.profilePhoto = profile.photos[0].value;
 
               newUser.save(function (err) {
-                  if (err) {
-                      return done(err);
-                  }
-                  return done(null, newUser);
+                if (err) {
+                  return done(err);
+                }
+                return done(null, newUser);
               });
             }
           });
@@ -245,18 +250,20 @@ module.exports = function (passport) {
            newUser.google.name = profile.displayName;
            newUser.google.profilePhoto = profile.photos[0].value;
            newUser.shippingInfo = {
-             street_address: "",
+             firstName: "",
+             lastName: "",
+             streetAddress: "",
              city: "",
              state: "",
              zip: "",
-             phone_number: ""
+             phoneNumber: ""
            };
-             newUser.save(function (err) {
-                 if (err) {
-                     return done(err);
-                 }
-                 return done(null, newUser);
-             });
+           newUser.save(function (err) {
+             if (err) {
+               return done(err);
+             }
+             return done(null, newUser);
+           });
          }
        });
       });

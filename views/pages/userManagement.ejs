@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <% include ../partial/head %>
+  </head>
+  <body>
+    <% include ../partial/header %>
+    <div class="container">
+      <div class="row">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">All Users</h4>
+          </div>
+          <div class="content table-responsive table-full-width">
+            <table class="table table-striped">
+              <thead>
+                <th>ID</th>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Type</th>
+                <!--<th>City</th>-->
+              </thead>
+              <tbody>
+                <% for (var i = 0; i < userList.length; i++) { %>
+                <tr>
+                  <td><%= userList[i]._id%></td>
+                  <td><%= userList[i].name%></td>
+                  <td><%= userList[i].email%></td>
+                  <td><%= userList[i].type%></td>
+                  <td><button class="btn btn-primary btn-sm btnDetail" tag="<%= userList[i]._id%>">Detail</button> </td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    $(document).ready(function() {
+      $(".btnDetail").on("click", function() {
+        var userId = $(this).attr("tag");
+        console.log(userId);
+        var url = "/userManagement/detail/" + userId;
+        window.location.href = url;
+      });
+    });
+  </script>
+</html>

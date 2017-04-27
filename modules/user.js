@@ -28,11 +28,13 @@ var userSchema = new Schema({
       profilePhoto: String
     },
     shippingInfo : {
-      street_address: String,
+      firstName: String,
+      lastName: String,
+      streetAddress: String,
       city: String,
       state: String,
       zip: String,
-      phone_number: String
+      phoneNumber: String
     }
 });
 

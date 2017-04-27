@@ -12,7 +12,9 @@
           <hr /> <!-- spliter line -->
           <div class="form-horizontal col-sm-10 col-sm-offset-1"><!-- whole block -->
             <!-- success block -->
-            <div id="successMessageBlock" class="hide">
+            <div id="successMessageBlock" class="alert alert-success dismissable hide">
+              <button type="button" aria-hidden="true" class="close">×</button>
+              <span id="successMessage"></span>
             </div>
             <!-- alert block -->
             <div id="alertMessageBlock" class="hide">
@@ -29,7 +31,7 @@
             <div class="form-group">
               <label class="col-sm-3 control-label" for="category">Category:</label>
               <div class="col-sm-9">
-                <label class="radio-inline"><input type="radio" name="category" value="men" id="men">Men</label>
+                <input type="radio" name="category" value="men" id="men">Men
                 <label class="radio-inline"><input type="radio" name="category" value="women" id="women">Women</label>
                 <label class="radio-inline"><input type="radio" name="category" value="kids" id="kids">Kids</label>
               </div>
@@ -64,8 +66,10 @@
             </div>
             <!-- button group -->
             <div class="form-group" id="buttonGroupInCreateProduct" >
-              <div class="col-sm-offset-4 col-sm-4" style="text-align: center">
-                <button class="btn btn-success" id="btnSaveProduct">Save</button>
+              <div class="col-sm-offset-3 col-sm-4">
+                <button class="btn btn-success" id="btnSaveProduct">Create</button>
+              </div>
+              <div class="col-sm-4" style="text-align: center">
                 <button class="btn btn-default" id="btnCancelSavingProduct">Cancel</button>
               </div>
             </div>
@@ -88,13 +92,17 @@
     }
 
     function showAlert(message) {
-      $('#alertMessageBlock').html('<div class="alert alert-danger alert-dismissable"><a class="panel-close close" data-dismiss="alert">×</a><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;'+ message + '</div>');
+      $('#alertMessageBlock').html('' +
+          '<div class="alert alert-danger alert-dismissable"><button type="button" aria-hidden="true" class="close">×</button>' +
+          ''+ message + '</div>');
       $('#alertMessageBlock').removeClass("hide");
     }
 
     function showSuccessInfo(message) {
-      $('#successMessageBlock').html('<div class="alert alert-success alert-dismissable"><a class="panel-close close" data-dismiss="alert">×</a><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;'+ message + '</div>');
+      $("#successMessage").append(message);
       $('#successMessageBlock').removeClass("hide");
+//      $('#successMessageBlock').html('<div class="alert alert-success alert-dismissable"><a class="panel-close close" data-dismiss="alert">×</a><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;'+ message + '</div>');
+//
     }
 
 

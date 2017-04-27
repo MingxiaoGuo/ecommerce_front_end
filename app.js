@@ -33,7 +33,6 @@ app.use(cookieParser());
 // [END use cookie parser middleware]
 
 app.use(express.static(path.join(__dirname, '/public')));
-//console.log("dirname", __dirname);
 app.set('views', path.join(__dirname, 'views/'));
 // [START config session]
 app.use(session({
@@ -55,6 +54,7 @@ var profile = require('./routes/profile')(passport);
 var logout = require('./routes/logout')(passport);
 var auth = require('./routes/auth')(passport);
 var admin = require('./routes/admin')(passport);
+var userManagement = require('./routes/userManagement')(passport);
 var serverManagement = require('./routes/serverManagement')(passport);
 var productManagement = require('./routes/productManagement')(passport);
 var bikes = require('./routes/bikes')(bikes);
@@ -67,6 +67,7 @@ app.use('/profile', profile);
 app.use('/logout', logout);
 app.use('/auth', auth);
 app.use('/admin', admin);
+app.use('/userManagement', userManagement);
 app.use('/serverManagement', serverManagement);
 app.use('/productManagement', productManagement);
 app.use('/bikes', bikes);

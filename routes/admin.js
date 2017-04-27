@@ -1,10 +1,12 @@
+'user strict';
+
 var express = require('express');
 var router = express.Router();
 
 module.exports = function (passport) {
-    router.get('/', function(req, res) {
+    router.get('/', function (req, res) {
       console.log("in admin: ", req.user);
-      if (req.user != undefined && req.user.type == "admin") {
+      if (req.user !== undefined && req.user.type == "admin") {
         req.session.user = req.user;
         res.render('pages/admin', { user : req.session.user });
       } else {
@@ -101,7 +103,7 @@ module.exports = function (passport) {
                 productPrice: "12999.99",
                 productInventory: "50"
               }
-            ]
+            ];
             res.render('pages/productManagement', { user : req.user, productList : productList });
         }
     });

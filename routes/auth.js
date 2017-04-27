@@ -9,14 +9,14 @@ module.exports = function (passport) {
     router.get('/facebook', passport.authenticate('facebook', { scope: 'email'}));
 
     router.get('/facebook/callback',
-        passport.authenticate('facebook', { successRedirect: '/profile',
+        passport.authenticate('facebook', { successRedirect: '/',
                                             failureRedirect: '/login' }));
 
     router.get('/google', passport.authenticate('google', { scope: [ 'https://www.googleapis.com/auth/plus.login',
         'https://www.googleapis.com/auth/plus.profile.emails.read'] }));
 
     router.get('/google/callback',
-        passport.authenticate('google', { successRedirect: '/profile',
+        passport.authenticate('google', { successRedirect: '/',
                                             failureRedirect: '/login'}));
 
     return router;
