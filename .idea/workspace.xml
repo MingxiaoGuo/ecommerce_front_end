@@ -3,13 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="45554e28-1a24-442c-959d-ba2d1e153fd6" name="Default" comment="finish add to cart">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/passport.js" afterPath="$PROJECT_DIR$/config/passport.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/cart.js" afterPath="$PROJECT_DIR$/modules/cart.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/order.js" afterPath="$PROJECT_DIR$/modules/order.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/bikes.js" afterPath="$PROJECT_DIR$/routes/bikes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/pages/mensbikes.ejs" afterPath="$PROJECT_DIR$/views/pages/mensbikes.ejs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/pages/productDetail.ejs" afterPath="$PROJECT_DIR$/views/pages/productDetail.ejs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/partial/header.ejs" afterPath="$PROJECT_DIR$/views/partial/header.ejs" />
     </list>
     <ignored path="BikeStore.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -532,12 +525,20 @@
       <workItem from="1493274857828" duration="646000" />
       <workItem from="1493275969511" duration="1071000" />
       <workItem from="1493338274396" duration="94000" />
-      <workItem from="1493338378322" duration="6848000" />
+      <workItem from="1493338378322" duration="6902000" />
     </task>
+    <task id="LOCAL-00001" summary="finish add to cart">
+      <created>1493345392588</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1493345392588</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="331334000" />
+    <option name="totallyTimeSpent" value="331388000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
