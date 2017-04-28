@@ -5,11 +5,19 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var orderSchema = new Schema({
-  price: String,
-  name: String,
-  inventory: String,
-  productPhotos: Array,
-  description: String
+  userId: String,
+  productList: Array,
+  timestamp: String,
+  shippingAddress : {
+    firstName: String,
+    lastName: String,
+    streetAddress: String,
+    city: String,
+    state: String,
+    zip: String,
+    phoneNumber: String
+  },
+  totalPrice: String
 });
 
 module.exports = mongoose.model('Order', orderSchema);

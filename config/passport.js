@@ -3,16 +3,17 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var User = require('../modules/user');
+var Cart = require("../modules/cart");
 var configAuth = require('./authentication');
 
 module.exports = function (passport) {
 
-	passport.serializeUser(function(user, done) {
-		done(null, user.id);
-	});
+  passport.serializeUser(function(user, done) {
+      done(null, user.id);
+  });
 
-	passport.deserializeUser(function(id, done) {
-		User.findById(id, function(err, user) {
+  passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
       var newUser = {};
       newUser._id = user._id;
       newUser.shippingInfo = user.shippingInfo;
@@ -43,9 +44,9 @@ module.exports = function (passport) {
         newUser.password = user.admin.password;
       }
       //console.log("in passport", newUser);
-			done(err, newUser);
-		});
-	});
+      done(err, newUser);
+    });
+  });
 
     /**
      * [Local Register Strategy]
@@ -77,12 +78,13 @@ module.exports = function (passport) {
             zip: "",
             phoneNumber: ""
           };
-          newUser.save(function (err) {
+          newUser.save(function (err, user) {
             if (err) {
               console.log("cannot register![in passport]");
               throw err;
             }
-            console.log("registered!")
+            //console.log("registered!", user);
+            createNewCart(user._id);
             return done(null, newUser);
           });
         }
@@ -213,10 +215,11 @@ module.exports = function (passport) {
 
               newUser.facebook.profilePhoto = profile.photos[0].value;
 
-              newUser.save(function (err) {
+              newUser.save(function (err, user) {
                 if (err) {
                   return done(err);
                 }
+                createNewCart(user._id);
                 return done(null, newUser);
               });
             }
@@ -258,15 +261,30 @@ module.exports = function (passport) {
              zip: "",
              phoneNumber: ""
            };
-           newUser.save(function (err) {
+           newUser.save(function (err, user) {
              if (err) {
                return done(err);
              }
+             createNewCart(user._id);
              return done(null, newUser);
            });
          }
        });
       });
     }));
+};
 
-}
+var createNewCart = function (userId) {
+  var newCart = new Cart();
+  newCart.userId = userId;
+  newCart.productList = [];
+
+  newCart.save(function(error, res) {
+    if (error) {
+      return error;
+    }
+    return res;
+    //console.log("in cart", res);
+  });
+
+};

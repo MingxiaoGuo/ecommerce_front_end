@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Product = require("../modules/product");
+var Cart = require("../modules/cart");
 
 module.exports = function (passport) {
   router.get('/', function (req, res) {
@@ -78,6 +79,33 @@ module.exports = function (passport) {
         }
       }
     });
+
+
+    router.post("/productDetail", function (req, res) {
+      var product_id = req.body.id;
+      console.log(req.session.user._id);
+      Cart.findOne({ "userId" : req.session.user._id }, function (err, cart) {
+        if (err) {
+          throw err;
+        }
+        console.log(cart);
+        cart.productList.push(product_id);
+        cart.save(function (err, updatedCart) {
+          if (err) {
+            console.log(err) ;
+            res.json({
+              done: false,
+              message: "Cannot add this product into cart"
+            })
+          }
+          res.json({
+            done: true,
+            message: "Product added"
+          });
+        })
+      })
+    });
+
   });
 
   return router;

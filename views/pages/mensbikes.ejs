@@ -32,7 +32,7 @@
               </table>
               <p>
                 <button class="btn btn-primary btn-block btnProductDetail" value="<%= productList[i]._id%>">Detail</button>
-                <button class="btn btn-warning btn-block">Add to cart</button>
+                <!--<button class="btn btn-warning btn-block" id="btnAddCart">Add to cart</button>-->
               </p>
             </div>
           </div>
@@ -44,12 +44,15 @@
     <% include ../partial/footer %>
   </body>
 <script>
-  $(".btnProductDetail").on("click", function () {
-    var id = $(this).val();
-    alert("clicked" + id);
-    //console.log(id);
-    var url = "/bikes/productDetail/" + id;
-    window.location.href = url;
-  })
+  $(document).ready(function () {
+    $(".btnProductDetail").on("click", function () {
+      var id = $(this).val();
+      alert("clicked" + id);
+      //console.log(id);
+      var url = "/bikes/productDetail/" + id;
+      window.location.href = url;
+    });
+  });
+
 </script>
 </html>
