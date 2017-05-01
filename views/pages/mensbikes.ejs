@@ -47,7 +47,6 @@
   $(document).ready(function () {
     $(".btnProductDetail").on("click", function () {
       var id = $(this).val();
-      alert("clicked" + id);
       //console.log(id);
       var url = "/bikes/productDetail/" + id;
       window.location.href = url;

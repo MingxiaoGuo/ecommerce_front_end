@@ -16,7 +16,7 @@ module.exports = function (passport) {
   router.get('/men', function (req, res) {
     Product.find({}).select("category product").where("category").equals("men").
     exec(function (err, productList) {
-      console.log(productList);
+      //console.log(productList);
       if (req.session.user == undefined) {
         res.render('pages/mensbikes', {productList : productList});
       } else {
@@ -44,8 +44,10 @@ module.exports = function (passport) {
     }
   });
   
+  /**
+   * 
+   */
   router.get('/productDetail/:productId', function (req, res) {
-    //console.log(req.params);
     var product = {
       _id : String,
       name : String,
@@ -69,9 +71,10 @@ module.exports = function (passport) {
         product.photos = prod.product.productPhotos;
         //product.description = prod.product.description.split("\n");
         var descriptionList = prod.product.description.split("\n");
-        console.log(descriptionList);
+        //console.log(descriptionList);
         product.description = descriptionList;
-        console.log(product);
+        //console.log(product);
+        req.session.product = product; 
         if (req.session.user != undefined) {
           res.render("pages/productDetail", {user: req.session.user, product: product});
         } else {
@@ -83,26 +86,40 @@ module.exports = function (passport) {
 
     router.post("/productDetail", function (req, res) {
       var product_id = req.body.id;
-      console.log(req.session.user._id);
+      //console.log(req.session);
       Cart.findOne({ "userId" : req.session.user._id }, function (err, cart) {
         if (err) {
           throw err;
         }
-        console.log(cart);
-        cart.productList.push(product_id);
-        cart.save(function (err, updatedCart) {
-          if (err) {
-            console.log(err) ;
-            res.json({
-              done: false,
-              message: "Cannot add this product into cart"
-            })
-          }
+        
+        var findProduct = function(p) {
+          return p._id == req.session.product._id;
+        }
+        if (cart.productList.find(findProduct) != undefined) {
+          console.log("this product is already in list");
           res.json({
-            done: true,
-            message: "Product added"
+            done: false,
+            message: "Already in cart"
           });
-        })
+        } else {
+          cart.productList.push(req.session.product);
+
+          cart.save(function (err, updatedCart) {
+            if (err) {
+              console.log(err) ;
+              res.json({
+                done: false,
+                message: "Cannot add this product into cart"
+              })
+            }
+            res.json({
+              done: true,
+              message: "Product added"
+            });
+          });
+        }
+        
+
       })
     });
 

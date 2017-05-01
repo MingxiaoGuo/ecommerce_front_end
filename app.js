@@ -58,6 +58,7 @@ var userManagement = require('./routes/userManagement')(passport);
 var serverManagement = require('./routes/serverManagement')(passport);
 var productManagement = require('./routes/productManagement')(passport);
 var bikes = require('./routes/bikes')(bikes);
+var cart = require('./routes/myCart')(passport);
 
 app.use('/', index);
 app.use('/users', users);
@@ -71,6 +72,7 @@ app.use('/userManagement', userManagement);
 app.use('/serverManagement', serverManagement);
 app.use('/productManagement', productManagement);
 app.use('/bikes', bikes);
+app.use('/cart', cart);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
